@@ -752,9 +752,6 @@ class SearchResult {
 
 			wfRunHooks('SearchResultInitFromTitle', array($title, &$id));
 
-			// $testRevision = Revision::newFromTitle($this->mTitle, $id);
-			// var_dump($testRevision);exit;
-
 			$this->mRevision = Revision::newFromTitle($this->mTitle, $id);
 
 			if($this->mTitle->getNamespace() === NS_FILE) $this->mImage = wfFindFile( $this->mTitle );
