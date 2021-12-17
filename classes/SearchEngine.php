@@ -682,6 +682,7 @@ class SearchResult {
 	/**
 	 * @var Revision
 	 */
+
 	var $mRevision = null;
 	var $mImage = null;
 
@@ -742,14 +743,21 @@ class SearchResult {
 	 * @param $title Title
 	 */
 	protected function initFromTitle( $title ) {
+
 		$this->mTitle = $title;
-		if ( !is_null( $this->mTitle ) ) {
+
+		if(!is_null($this->mTitle)) {
+
 			$id = false;
-			wfRunHooks( 'SearchResultInitFromTitle', array( $title, &$id ) );
-			$this->mRevision = Revision::newFromTitle(
-				$this->mTitle, $id, Revision::READ_NORMAL );
-			if ( $this->mTitle->getNamespace() === NS_FILE )
-				$this->mImage = wfFindFile( $this->mTitle );
+
+			wfRunHooks('SearchResultInitFromTitle', array($title, &$id));
+
+			// $testRevision = Revision::newFromTitle($this->mTitle, $id);
+			// var_dump($testRevision);exit;
+
+			$this->mRevision = Revision::newFromTitle($this->mTitle, $id);
+
+			if($this->mTitle->getNamespace() === NS_FILE) $this->mImage = wfFindFile( $this->mTitle );
 		}
 	}
 

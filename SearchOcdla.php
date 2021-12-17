@@ -1,7 +1,6 @@
 <?php
 
-if ( !defined( 'MEDIAWIKI' ) )
-	die();
+if(!defined('MEDIAWIKI')) die();
 
 /**
  * General extension information.
@@ -19,18 +18,14 @@ $wgExtensionCredits['specialpage'][] = array(
 
 $dir = dirname( __FILE__ );
 
-
-
-
 $overrides = array(
-	'SearchEngine'          		=> $dir . '/classes/SearchEngine.php'
+	'SearchEngine'	=> $dir . '/classes/SearchEngine.php'
 );
 
 $wgAutoloadLocalClasses = array_merge($wgAutoloadLocalClasses,$overrides);
 
 
 class SearchOcdlaHooks {
-
 
 	public static function SetupSearchOcdla(){
 		global $wgHooks, $wgResourceModules;
@@ -54,24 +49,21 @@ class SearchOcdlaHooks {
 	}
 	
 	public static function onBeforePageDisplay(OutputPage &$out, Skin &$skin ) {
+
 		if(in_array(strtolower($out->getPageTitle()),array('search results','search'))) {
+
 			$out->addModules('search.booksonline.js');
 		}
 		
 		return true;
 	}
 
-	public static function onSpecialSearchCreateLink($t, &$params)
-	{
-		// array() // get title variants
-		if($t->isKnown())
-		{
-			return true;
-		}
-		
-		// print "<pre>".print_r($t,true)."</pre>";exit;
+	public static function onSpecialSearchCreateLink($t, &$params) {
+
+		if($t->isKnown()) return true;
 		
 		$dbr = wfGetDB( DB_SLAVE );
+
 		$page_id = $dbr->selectField(
 			'page_ocdlasearch',
 			'page_id',
@@ -80,17 +72,17 @@ class SearchOcdlaHooks {
 			)
 		);
 		
-		if($page_id)
-		{
+		if($page_id) {
+
 			$messageName = 'searchmenu-exists';
 			$t = Title::newFromID($page_id);
 		}
-		elseif( $t->userCan( 'create' ) )
-		{
+		elseif($t->userCan( 'create' )) {
+
 			$messageName = 'searchmenu-new';
 		}
-		else
-		{
+		else {
+			
 			$messageName = 'searchmenu-new-nocreate';
 		}
 		
